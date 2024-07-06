@@ -4,11 +4,13 @@ import { Todo } from "./ToDo";
 import { TodoForm } from "./ToDoForm";
 import { EditTodoForm } from "./EditTodoForm";
 
+const API_URL = "https://backend-jd6m.onrender.com"; // Replace with your deployed backend URL
+
 export const TodoWrapper = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/todos')
+    axios.get(`${API_URL}/todos`)
       .then((response) => {
         setTodos(response.data);
       })
@@ -18,7 +20,7 @@ export const TodoWrapper = () => {
   }, []);
 
   const addTodo = (todo) => {
-    axios.post('http://localhost:5000/todos', {
+    axios.post(`${API_URL}/todos`, {
       task: todo,
       completed: false,
       isEditing: false,
@@ -32,7 +34,7 @@ export const TodoWrapper = () => {
   };
 
   const deleteTodo = (id) => {
-    axios.delete(`http://localhost:5000/todos/${id}`)
+    axios.delete(`${API_URL}/todos/${id}`)
       .then((response) => {
         setTodos(todos.filter((todo) => todo._id !== id));
       })
@@ -47,7 +49,7 @@ export const TodoWrapper = () => {
       console.error(`Todo with id ${id} not found!`);
       return;
     }
-    axios.put(`http://localhost:5000/todos/${id}`, {
+    axios.put(`${API_URL}/todos/${id}`, {
       ...todo,
       completed: !todo.completed,
     })
@@ -65,7 +67,7 @@ export const TodoWrapper = () => {
       console.error(`Todo with id ${id} not found!`);
       return;
     }
-    axios.put(`http://localhost:5000/todos/${id}`, {
+    axios.put(`${API_URL}/todos/${id}`, {
       ...todo,
       isEditing: !todo.isEditing,
     })
@@ -78,21 +80,21 @@ export const TodoWrapper = () => {
   };
 
   const editTask = (task, id) => {
-  const todo = todos.find((todo) => todo._id === id);
-  if (todo) {
-    axios.put(`http://localhost:5000/todos/${id}`, {
-      ...todo,
-      task,
-      isEditing: false, // Assuming you want to stop editing after updating
-    })
-    .then((response) => {
-      setTodos(todos.map((todo) => todo._id === id ? response.data : todo));
-    })
-    .catch((error) => {
-      console.error("There was an error updating the todo!", error);
-    });
-  }
-};
+    const todo = todos.find((todo) => todo._id === id);
+    if (todo) {
+      axios.put(`${API_URL}/todos/${id}`, {
+        ...todo,
+        task,
+        isEditing: false, // Assuming you want to stop editing after updating
+      })
+      .then((response) => {
+        setTodos(todos.map((todo) => todo._id === id ? response.data : todo));
+      })
+      .catch((error) => {
+        console.error("There was an error updating the todo!", error);
+      });
+    }
+  };
 
   return (
     <div className="TodoWrapper">
