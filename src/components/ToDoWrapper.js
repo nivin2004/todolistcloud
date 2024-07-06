@@ -43,6 +43,10 @@ export const TodoWrapper = () => {
 
   const toggleComplete = (id) => {
     const todo = todos.find((todo) => todo._id === id);
+    if (!todo) {
+      console.error(`Todo with id ${id} not found!`);
+      return;
+    }
     axios.put(`http://localhost:5000/todos/${id}`, {
       ...todo,
       completed: !todo.completed,
@@ -57,6 +61,10 @@ export const TodoWrapper = () => {
 
   const editTodo = (id) => {
     const todo = todos.find((todo) => todo._id === id);
+    if (!todo) {
+      console.error(`Todo with id ${id} not found!`);
+      return;
+    }
     axios.put(`http://localhost:5000/todos/${id}`, {
       ...todo,
       isEditing: !todo.isEditing,
@@ -70,11 +78,12 @@ export const TodoWrapper = () => {
   };
 
   const editTask = (task, id) => {
-    const todo = todos.find((todo) => todo._id === id);
+  const todo = todos.find((todo) => todo._id === id);
+  if (todo) {
     axios.put(`http://localhost:5000/todos/${id}`, {
       ...todo,
       task,
-      isEditing: !todo.isEditing,
+      isEditing: false, // Assuming you want to stop editing after updating
     })
     .then((response) => {
       setTodos(todos.map((todo) => todo._id === id ? response.data : todo));
@@ -82,7 +91,8 @@ export const TodoWrapper = () => {
     .catch((error) => {
       console.error("There was an error updating the todo!", error);
     });
-  };
+  }
+};
 
   return (
     <div className="TodoWrapper">
