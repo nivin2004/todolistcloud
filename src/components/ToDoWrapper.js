@@ -4,7 +4,7 @@ import { Todo } from "./ToDo";
 import { TodoForm } from "./ToDoForm";
 import { EditTodoForm } from "./EditTodoForm";
 
-const API_URL = "https://backend-jd6m.onrender.com"; // Replace with your deployed backend URL
+const API_URL = "https://backend-jd6m.onrender.com"; 
 
 export const TodoWrapper = () => {
   const [todos, setTodos] = useState([]);
@@ -85,7 +85,7 @@ export const TodoWrapper = () => {
       axios.put(`${API_URL}/todos/${id}`, {
         ...todo,
         task,
-        isEditing: false, // Assuming you want to stop editing after updating
+        isEditing: false, 
       })
       .then((response) => {
         setTodos(todos.map((todo) => todo._id === id ? response.data : todo));
